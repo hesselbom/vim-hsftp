@@ -45,7 +45,7 @@ function! h:GetConf()
             let conf[vname] = vvalue
         endfor
 
-        let conf['local'] = '/Users/hesselbom/sftp/oiidesign/'
+        let conf['local'] = fnamemodify(l:foundconfig, ':h:p') . '/'
         let conf['localpath'] = expand('%:p')
         let conf['remotepath'] = conf['remote'] . conf['localpath'][strlen(conf['local']):]
     endif
