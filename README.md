@@ -39,7 +39,3 @@ Calls :Hupload
 
     <leader>hsf
 Calls :Hupdir
-
-
-    <leader>hsu
-Calls :Hupload
