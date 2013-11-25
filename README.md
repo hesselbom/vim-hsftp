@@ -26,9 +26,20 @@ Downloads current file from remote path
     :Hupload
 Uploads current file to remote path
 
+    :Hupdir
+Uploads current folder of current buffer to remote path
+
+
 ### Mappings
     <leader>hsd
 Calls :Hdownload
+
+    <leader>hsu
+Calls :Hupload
+
+    <leader>hsf
+Calls :Hupdir
+
 
     <leader>hsu
 Calls :Hupload
