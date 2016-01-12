@@ -41,7 +41,7 @@ function! H_GetConf()
     let options = readfile(l_foundconfig)
     for i in options
       let vname = substitute(i[0:stridx(i, ' ')], '^\s*\(.\{-}\)\s*$', '\1', '')
-      let vvalue = substitute(i[stridx(i, ' '):], '^\s*\(.\{-}\)\s*$', '\1', '')
+      let vvalue = escape(substitute(i[stridx(i, ' '):], '^\s*\(.\{-}\)\s*$', '\1', ''), "%#!")
       let conf[vname] = vvalue
     endfor
 
