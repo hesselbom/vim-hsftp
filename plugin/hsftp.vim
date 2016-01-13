@@ -9,26 +9,26 @@
 " Author: Viktor Hesselbom (hesselbom.net)
 " License: MIT
 
-function! h:GetConf()
+function! H_GetConf()
   let conf = {}
 
-  let l:configpath = expand('%:p:h')
-  let l:configfile = l:configpath . '/.hsftp'
-  let l:foundconfig = ''
-  if filereadable(l:configfile)
-    let l:foundconfig = l:configfile
+  let l_configpath = expand('%:p:h')
+  let l_configfile = l_configpath . '/.hsftp'
+  let l_foundconfig = ''
+  if filereadable(l_configfile)
+    let l_foundconfig = l_configfile
   else
-    while !filereadable(l:configfile)
-      let slashindex = strridx(l:configpath, '/')
+    while !filereadable(l_configfile)
+      let slashindex = strridx(l_configpath, '/')
       if slashindex >= 0
-        let l:configpath = l:configpath[0:slashindex]
-        let l:configfile = l:configpath . '.hsftp'
-        let l:configpath = l:configpath[0:slashindex-1]
-        if filereadable(l:configfile)
-          let l:foundconfig = l:configfile
+        let l_configpath = l_configpath[0:slashindex]
+        let l_configfile = l_configpath . '.hsftp'
+        let l_configpath = l_configpath[0:slashindex-1]
+        if filereadable(l_configfile)
+          let l_foundconfig = l_configfile
           break
         endif
-        if slashindex == 0 && !filereadable(l:configfile)
+        if slashindex == 0 && !filereadable(l_configfile)
           break
         endif
       else
@@ -37,15 +37,15 @@ function! h:GetConf()
     endwhile
   endif
 
-  if strlen(l:foundconfig) > 0
-    let options = readfile(l:foundconfig)
+  if strlen(l_foundconfig) > 0
+    let options = readfile(l_foundconfig)
     for i in options
       let vname = substitute(i[0:stridx(i, ' ')], '^\s*\(.\{-}\)\s*$', '\1', '')
-      let vvalue = substitute(i[stridx(i, ' '):], '^\s*\(.\{-}\)\s*$', '\1', '')
+      let vvalue = escape(substitute(i[stridx(i, ' '):], '^\s*\(.\{-}\)\s*$', '\1', ''), "%#!")
       let conf[vname] = vvalue
     endfor
 
-    let conf['local'] = fnamemodify(l:foundconfig, ':h:p') . '/'
+    let conf['local'] = fnamemodify(l_foundconfig, ':h:p') . '/'
     let conf['localpath'] = expand('%:p')
     let conf['remotepath'] = conf['remote'] . conf['localpath'][strlen(conf['local']):]
   endif
@@ -53,8 +53,8 @@ function! h:GetConf()
   return conf
 endfunction
 
-function! h:DownloadFile()
-  let conf = h:GetConf()
+function! H_DownloadFile()
+  let conf = H_GetConf()
 
   if has_key(conf, 'host')
     let action = printf('get %s %s', conf['remotepath'], conf['localpath'])
@@ -75,8 +75,8 @@ function! h:DownloadFile()
   endif
 endfunction
 
-function! h:UploadFile()
-  let conf = h:GetConf()
+function! H_UploadFile()
+  let conf = H_GetConf()
 
   if has_key(conf, 'host')
     let action = printf('put %s %s', conf['localpath'], conf['remotepath'])
@@ -96,8 +96,8 @@ function! h:UploadFile()
   endif
 endfunction
 
-function! h:UploadFolder()
-  let conf = h:GetConf()
+function! H_UploadFolder()
+  let conf = H_GetConf()
 
   " execute "! echo " . file
   " let conf['localpath'] = expand('%:p')
@@ -127,9 +127,9 @@ function! h:UploadFolder()
 
 endfunction
 
-command! Hdownload call h:DownloadFile()
-command! Hupload call h:UploadFile()
-command! Hupdir  call h:UploadFolder()
+command! Hdownload call H_DownloadFile()
+command! Hupload call H_UploadFile()
+command! Hupdir  call H_UploadFolder()
 
 nmap <leader>hsd :Hdownload<Esc>
 nmap <leader>hsu :Hupload<Esc>
