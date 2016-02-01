@@ -29,6 +29,8 @@ Uploads current file to remote path
     :Hupdir
 Uploads current folder of current buffer to remote path
 
+    :Hdowndir
+Downloads current folder of current buffer from remote path
 
 ### Mappings
     <leader>hsd
@@ -39,3 +41,6 @@ Calls :Hupload
 
     <leader>hsf
 Calls :Hupdir
+
+    <leader>hsg
+Calls :Hdowndir
