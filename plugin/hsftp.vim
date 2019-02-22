@@ -134,3 +134,11 @@ command! Hupdir  call H_UploadFolder()
 nmap <leader>hsd :Hdownload<Esc>
 nmap <leader>hsu :Hupload<Esc>
 nmap <leader>hsf :Hupdir<Esc>
+
+let conf = H_GetConf()
+if has_key(conf, 'host') && conf['auto_upload'] == 1
+  autocmd BufWritePost * if expand('%:t') != '.hsftp' | :call H_UploadFile()
+endif
+if has_key(conf, 'host') && conf['auto_download'] == 1
+  autocmd BufReadPre * if expand('%:t') != '.hsftp' |:call H_DownloadFile()
+endif
